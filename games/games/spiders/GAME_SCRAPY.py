@@ -8,10 +8,11 @@ class GameSpider(scrapy.Spider):
 
     def parse(self, response):
 
-       page = response.css('.gamespage').getall()
-       filename = 'games.html'
-       with open(filename, 'wb') as g:
-           g.write(response.body)
+       for games in response.css('.gamespage'):
+           yield {
+               'image' : response.xpath("//div[2]/div/div/a/img").getall(),  #extract the images from the ESL Gamepage
+               'title' : response.xpath("//div[2]/div/div/a/p").getall(),  #extract the game title
+           }
 
 
 
